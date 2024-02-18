@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Stroke Prediction Form</title>
+    <style>
+        body {
+            /* Set background image */
+            background-image: url('static/image2.jpg');
+            /* Set background image to cover entire viewport */
+            background-size: cover;
+            /* Center the background image */
+            background-position: center;
+            /* Set background color as fallback */
+            background-color: #f0f0f0; /* Light gray */
+            /* Set text color to contrast with background */
+            color: #333; /* Dark gray */
+        }
+
+        /* Style the form and other elements as needed */
+        #prediction-form {
+            /* Add some padding and margin */
+            padding: 20px;
+            margin: 50px auto;
+            /* Set background color with transparency */
+            background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+            /* Set border radius for rounded corners */
+            border-radius: 10px;
+            /* Add box shadow for depth */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Slight shadow */
+        }
+        /* Style the prediction result */
+        #result {
+            /* Increase font size and apply bold font */
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Brain Stroke Prediction Form</h1>
+    <form id="prediction-form" action="/predict" method="post">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select><br><br>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age"><br><br>
+
+        <label for="hypertension">Hypertension:</label>
+        <select id="hypertension" name="hypertension">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="heart_disease">Heart Disease:</label>
+        <select id="heart_disease" name="heart_disease">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="ever_married">Ever Married:</label>
+        <select id="ever_married" name="ever_married">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+        </select><br><br>
+
+        <label for="residence_type">Residence Type:</label>
+        <select id="residence_type" name="residence_type">
+            <option value="Rural">Rural</option>
+            <option value="Urban">Urban</option>
+        </select><br><br>
+
+        <label for="avg_glucose_level">Average Glucose Level (mg/dL):</label>
+        <input type="number" id="avg_glucose_level" name="avg_glucose_level" placeholder="50-250"><br><br>
+
+        <label for="bmi">BMI (kg/m²):</label>
+        <input type="number" id="bmi" name="bmi" placeholder="17-40"><br><br>
+
+        <label for="work_type">Work Type:</label>
+        <select id="work_type" name="work_type">
+            <option value="Private">Private</option>
+            <option value="Self-employed">Self-employed</option>
+            <option value="Govt_job">Govt_job</option>
+            <option value="children">Children</option>
+            <option value="Never_worked">Never_worked</option>
+        </select><br><br>
+
+        <label for="smoking_status">Smoking Status:</label>
+        <select id="smoking_status" name="smoking_status">
+            <option value="formerly smoked">Formerly Smoked</option>
+            <option value="never smoked">Never Smoked</option>
+            <option value="smokes">Smokes</option>
+            <option value="Unknown">Unknown</option>
+        </select><br><br>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('prediction-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Prediction of stroke Disease is : ${data.prediction}`;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
